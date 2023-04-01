@@ -1,7 +1,6 @@
 import csv
 from typing import Dict, List, Union
 
-
 def csv_to_json(file_path: str) -> Dict[str, Union[str, int, List[Dict[str, str]]]]:
     # Извлекаем номер рейса и аэропорт вылета из имени файла
     filename = file_path.split('/')[-1]

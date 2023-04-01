@@ -1,7 +1,6 @@
 import sqlite3
 from typing import List
 from datetime import datetime
-
 def get_db():
     conn = sqlite3.connect("flights.db")
     return conn
@@ -27,6 +26,7 @@ def insert_flight(conn: sqlite3.Connection, file_name: str, flt: int, dep: str, 
     c.execute("INSERT INTO flight (file_name, flt, dep, depdate) VALUES (?, ?, ?, ?)",
               (file_name, flt, dep, depdate.date()))
     conn.commit()
+
 
 def get_flights_by_date(conn: sqlite3.Connection, date: datetime) -> List[dict]:
     """
