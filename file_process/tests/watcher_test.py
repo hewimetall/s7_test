@@ -17,7 +17,8 @@ class WatherTest(unittest.TestCase):
         handler = MyHandler(Queue())
         invalid_file = 'path/to/invalid_file.csv'
         with patch("schema.FlightFromName.to_python", side_effect=Exception('Invalid File')):
-            self.assertFalse(handler.check(invalid_file))
+            with patch("file_handler.move_file"):
+                self.assertFalse(handler.check(invalid_file))
 
     def test_notif_queue_full(self):
         handler = MyHandler(Queue(maxsize=1))
