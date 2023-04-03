@@ -13,7 +13,7 @@ logger = logging.getLogger("FileProcess")
 
 
 class FileProcess(Process):
-    max_worker = 5
+    max_worker = 3
 
     def __init__(self, path: str, *args, **kwargs):
         self.path = pathlib.Path(path)

@@ -9,7 +9,9 @@ logger = logging.getLogger("sqlite")
 
 
 def get_db() -> sqlite3.Connection:
-    conn = sqlite3.connect(settings.DATABASE)
+    conn = sqlite3.connect(settings.DATABASE, isolation_level=None, timeout=20)
+    cursor = conn.cursor()
+    cursor.execute("PRAGMA journal_mode=WAL")
     return conn
 
 

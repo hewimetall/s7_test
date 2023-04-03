@@ -32,6 +32,7 @@ def move_file(source_path: str, target_dir: str) -> None:
         logging.error(f"File exists:{os.path.join(target_dir, name)}")
         os.remove(source_path)
 
+
 def list_files(path: str, extension: str = None) -> list:
     """
     Возвращает список файлов в директории path с расширением extension (если указано).

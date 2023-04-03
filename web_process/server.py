@@ -7,7 +7,6 @@ from db import get_db
 
 app = FastAPI()
 
-
 @app.get("/flights/{flight_date}")
 def get_flights(flight_date: str):
     conn = get_db()

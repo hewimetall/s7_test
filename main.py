@@ -10,6 +10,7 @@ from web_process import WebProcess
 logging.basicConfig(filename='service.log', level=logging.INFO)
 logger = logging.getLogger("Main:")
 
+
 def main():
     gen_struct(settings.PATH)
     if db.init():
@@ -35,6 +36,7 @@ def main():
         sys.exit(settings.ExistCode.START_PROCESS)
     else:
         logger.info(f"Ok process start{'.' * len(process)}")
+
 
 if __name__ == '__main__':
     main()

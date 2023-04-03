@@ -1,6 +1,5 @@
 import enum
 import logging
-import pathlib
 import threading
 import time
 from queue import Queue
@@ -53,18 +52,19 @@ class StepHelper(object):
             except:
                 pass
         file_handler.move_file(
-            source_path=str(self.flight.file_path),
-            target_dir=str(self.flight.file_path.path_err())
+            source_path=str(self.file_path),
+            target_dir=str(self.file_path.path_err())
         )
         self.status = self.Status.FINISH
 
     def success(self):
         """ Перемещяет файл в директорию ok """
         file_handler.move_file(
-            source_path=str(self.flight.file_path),
-            target_dir=str(self.flight.file_path.path_ok())
+            source_path=str(self.file_path),
+            target_dir=str(self.file_path.path_ok())
         )
         self.status = self.Status.FINISH
+
 
 class Worker(Thread):
     def __init__(self, q: Queue, number: int, event: threading.Event, *args, **kwargs):
