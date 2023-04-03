@@ -1,4 +1,5 @@
 import logging
+import os
 import pathlib
 import threading
 from multiprocessing import Process
@@ -27,8 +28,9 @@ class FileProcess(Process):
         self.event = threading.Event()
         self.worker = []
         q = Queue()
-        for item in list_files(self.path.joinpath("in"), extension="csv"):
-            q.put(item)
+        cached_file = list_files(self.path.joinpath("in"), extension="csv")
+        for item in cached_file:
+            os.rename(item, item + "_init")
 
         self.observer = Observer(q, self.path.joinpath("in").__str__())
         self.workers = [Worker(q, i + 1, self.event, daemon=False) for i in range(self.max_worker)]
@@ -36,6 +38,9 @@ class FileProcess(Process):
         for th in self.workers:
             th.start()
         logging.info(f"START WORKERS {'.' * self.max_worker}")
+        # Запускаем в процесс файлы лежащие в in генерируя эвент
+        for item in cached_file:
+            os.rename(item + "_init", item)
 
     def test(self) -> bool:
         list_dirs = [

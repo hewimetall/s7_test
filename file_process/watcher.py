@@ -10,10 +10,8 @@ from schema import FlightFromName
 
 logger = logging.getLogger("Watcher:")
 
-
 class MyHandler(FileSystemEventHandler):
     ext = '.csv'
-
     def __init__(self, q: Queue):
         self.q = q
 
@@ -35,13 +33,24 @@ class MyHandler(FileSystemEventHandler):
             logger.error(f"Convert err:\n {str(e)}")
             return False
 
-    def on_created(self, event):
-        src_path = getattr(event, 'src_path')
-
-        if src_path[-4:] == self.ext and self.check(src_path):
-            self.notif(src_path)
+    def process(self, path: str):
+        if path[-4:] == self.ext and self.check(path):
+            self.notif(path)
         else:
-            logger.warning(f"Not correct filename {src_path}")
+            logger.warning(f"Not correct filename {path}")
+
+    def on_created(self, event):
+        src_path = getattr(event, 'src_path', None)
+        if src_path:
+            self.process(src_path)
+
+    def on_moved(self, event):
+        dest_path = getattr(event, 'dest_path', None)
+        src_path: str = getattr(event, 'src_path', None)
+        if src_path.endswith("_init"):
+            self.process(dest_path)
+        else:
+            logger.warning(f"File moved {src_path}->{dest_path}")
 
 
 class Observer(WatchdogObserver):
@@ -51,3 +60,4 @@ class Observer(WatchdogObserver):
         self.schedule(MyHandler(q),
                       path=path,
                       recursive=False)
+
