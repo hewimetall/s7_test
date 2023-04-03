@@ -1,9 +1,10 @@
-from queue import Queue
-from watchdog.observers import Observer as WatchdogObserver
-from watchdog.events import FileSystemEventHandler
 import logging
+from queue import Queue
 
-from schema import FlightFromDB
+from watchdog.events import FileSystemEventHandler
+from watchdog.observers import Observer as WatchdogObserver
+
+from schema import FlightFromName
 
 logger = logging.getLogger("Watcher:")
 
@@ -21,7 +22,7 @@ class MyHandler(FileSystemEventHandler):
 
     def check(self, file_path:str)->bool:
         try:
-            FlightFromDB.to_python(file_path)
+            FlightFromName.to_python(file_path)
             return True
         except Exception as e:
             logger.error(f"Convert err:\n {e.__traceback__}")

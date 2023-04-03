@@ -1,0 +1,7 @@
+.idea
+__pycache__
+s7.db
+test
+service.log
+*.csv
+*.json
